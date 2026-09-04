@@ -1,0 +1,6 @@
+{
+  "name": "VK Chat Exporter",
+  "description": "Веб-сервис для безопасного экспорта переписок ВКонтакте в TXT через официальный VK API",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

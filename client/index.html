@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>VK Chat Exporter — Экспорт переписок ВКонтакте в TXT</title>
+  <meta name="description" content="Безопасный веб-сервис для сохранения и экспорта личных сообщений и диалогов VK в чистый текстовый формат TXT без лишних тегов.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%232787F5%22><path d=%22M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.38 12.06c-.46 1.05-1.5 2.15-3.05 2.15-.34 0-.67-.05-1-.15-.4-.13-.76-.32-1.07-.58-.65-.54-1.22-1.3-1.78-2.07-.35-.48-.68-.96-1.05-1.42-.14.19-.24.41-.29.65-.08.38-.07.77-.07 1.16 0 .5-.38.91-.88.93H7.55c-.53 0-.96-.43-.96-.96 0-1.89.47-3.69 1.34-5.32.76-1.42 1.83-2.65 3.12-3.58.55-.4 1.25-.38 1.76.05.47.4.63 1.04.42 1.63-.3.84-.71 1.63-1.23 2.36.43.34.88.66 1.34.96.65.43 1.32.84 2.01 1.21.36.2.62.53.7.93.08.4-.04.81-.31 1.11z%22/></svg>">
+</head>
+<body>
+  <div id="app" class="app-root">
+    
+    <!-- HEADER -->
+    <header class="top-nav" id="topNav">
+      <div class="nav-container">
+        <div class="brand">
+          <div class="brand-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">VK Chat Exporter</span>
+            <span class="brand-badge">Официальный VK API</span>
+          </div>
+        </div>
+
+        <!-- AUTH PROFILE WIDGET IN NAV -->
+        <div class="nav-actions">
+          <div id="userWidget" class="user-widget hidden">
+            <img id="userAvatar" class="user-avatar" src="" alt="Аватар">
+            <div class="user-info">
+              <span id="userName" class="user-name">Пользователь</span>
+              <span id="userStatus" class="user-sub">В сети</span>
+            </div>
+            <button id="logoutBtn" class="btn-icon" title="Выйти из аккаунта" aria-label="Выйти">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <polyline points="16 17 21 12 16 7"/>
+                <line x1="21" y1="12" x2="9" y2="12"/>
+              </svg>
+            </button>
+          </div>
+          <button id="infoModalBtn" class="btn-ghost" title="О сервисе и правах VK API">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <span class="desktop-only">О сервисе</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN VIEW CONTAINER -->
+    <main class="main-content">
+
+      <!-- 1. GUEST / WELCOME SCREEN -->
+      <section id="guestScreen" class="screen-view guest-view">
+        <div class="hero-card">
+          <div class="hero-icon-wrap">
+            <svg class="vk-symbol" viewBox="0 0 24 24" width="48" height="48" fill="#2787F5">
+              <path d="M12.98 17.5c-4.95 0-7.77-3.41-7.89-9.08h2.47c.08 4.16 1.91 5.92 3.36 6.28V8.42h2.33v3.58c1.42-.15 2.9-1.78 3.4-3.58h2.32c-.39 2.22-2.02 3.85-3.18 4.52 1.16.54 3.01 1.99 3.73 4.56h-2.55c-.56-1.76-1.97-3.13-3.83-3.32v3.32h-.16z"/>
+            </svg>
+          </div>
+
+          <h1 class="hero-title">VK Chat Exporter</h1>
+          <p class="hero-desc">
+            Сохраняйте личные диалоги и групповые беседы ВКонтакте в удобном, чистом формате <strong>.TXT</strong> для чтения, резервного копирования или анализа.
+          </p>
+
+          <div class="security-highlights">
+            <div class="highlight-item">
+              <span class="highlight-icon">🔒</span>
+              <div>
+                <strong>Безопасная авторизация</strong>
+                <span>Только официальный OAuth 2.0 / VK ID. Мы никогда не спрашиваем пароль.</span>
+              </div>
+            </div>
+            <div class="highlight-item">
+              <span class="highlight-icon">🛡️</span>
+              <div>
+                <strong>Конфиденциальность</strong>
+                <span>Сообщения не сохраняются на сервере и не передаются третьим лицам или ИИ.</span>
+              </div>
+            </div>
+            <div class="highlight-item">
+              <span class="highlight-icon">📄</span>
+              <div>
+                <strong>Чистый TXT-формат</strong>
+                <span>Хронологический порядок, отметки времени, имена и аккуратные вложения.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- PRIMARY LOGIN ACTION -->
+          <div class="login-action-group">
+            <button id="vkLoginBtn" class="btn-primary btn-vk-main">
+              <svg class="btn-vk-icon" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                <path d="M12.98 17.5c-4.95 0-7.77-3.41-7.89-9.08h2.47c.08 4.16 1.91 5.92 3.36 6.28V8.42h2.33v3.58c1.42-.15 2.9-1.78 3.4-3.58h2.32c-.39 2.22-2.02 3.85-3.18 4.52 1.16.54 3.01 1.99 3.73 4.56h-2.55c-.56-1.76-1.97-3.13-3.83-3.32v3.32h-.16z"/>
+              </svg>
+              <span>Войти через VK</span>
+            </button>
+
+            <!-- DEMO / TEST MODE BUTTON -->
+            <button id="demoLoginBtn" class="btn-secondary">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              <span>Попробовать демо-режим (быстрый тест)</span>
+            </button>
+          </div>
+
+          <!-- VK API NOTICE -->
+          <div class="vk-policy-notice">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span>ВКонтакте ограничивает доступ к личным перепискам для новых приложений без специальной модерации VK. Демо-режим позволяет мгновенно проверить весь функционал экспорта.</span>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 2. AUTHENTICATED APP SCREEN (TWO-PANE ADAPTIVE LAYOUT) -->
+      <section id="appScreen" class="screen-view app-view hidden">
+        <div class="workspace-container" id="workspace">
+
+          <!-- LEFT PANE: DIALOGS LIST -->
+          <aside class="pane-dialogs" id="paneDialogs">
+            <div class="pane-header">
+              <div class="search-box">
+                <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="dialogSearchInput" placeholder="Поиск по диалогам и чатам..." autocomplete="off">
+                <button id="clearSearchBtn" class="btn-clear hidden" aria-label="Очистить поиск">✕</button>
+              </div>
+            </div>
+
+            <!-- STATUS/FILTER BAR -->
+            <div class="dialogs-meta-bar">
+              <span id="dialogsCountLabel" class="meta-label">Диалоги</span>
+              <button id="refreshDialogsBtn" class="btn-icon-small" title="Обновить список">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="23 4 23 10 17 10"></polyline>
+                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                </svg>
+              </button>
+            </div>
+
+            <!-- DIALOGS SCROLLABLE LIST -->
+            <div class="dialogs-scroll-area" id="dialogsList">
+              <!-- Rendered dynamically -->
+              <div class="state-loading" id="dialogsLoading">
+                <div class="spinner"></div>
+                <p>Загрузка диалогов VK...</p>
+              </div>
+            </div>
+
+            <!-- LOAD MORE DIALOGS BUTTON -->
+            <div class="pane-footer" id="dialogsFooter">
+              <button id="loadMoreDialogsBtn" class="btn-subtle hidden">
+                <span>Загрузить ещё диалоги</span>
+              </button>
+            </div>
+          </aside>
+
+          <!-- RIGHT PANE: SELECTED DIALOG & EXPORT VIEW -->
+          <section class="pane-chat" id="paneChat">
+            
+            <!-- EMPTY STATE WHEN NO CHAT IS SELECTED -->
+            <div class="chat-placeholder" id="chatPlaceholder">
+              <div class="placeholder-content">
+                <div class="placeholder-icon">
+                  <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                </div>
+                <h3>Выберите диалог для экспорта</h3>
+                <p>Выберите собеседника или беседу из списка слева, чтобы просмотреть переписку и скачать её в формате .TXT</p>
+              </div>
+            </div>
+
+            <!-- ACTIVE CHAT VIEW (SHOWN AFTER SELECTING A DIALOG) -->
+            <div class="active-chat-content hidden" id="activeChatContent">
+
+              <!-- CHAT HEADER -->
+              <div class="active-chat-header">
+                <button id="backToDialogsBtn" class="btn-icon-back mobile-only" aria-label="Назад к списку">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                  </svg>
+                </button>
+
+                <img id="chatHeaderAvatar" class="chat-header-avatar" src="" alt="Avatar">
+                
+                <div class="chat-header-info">
+                  <h2 id="chatHeaderTitle" class="chat-header-title">Собеседник</h2>
+                  <div class="chat-header-meta">
+                    <span id="chatLoadedCount" class="badge-count">Загружено: 0</span>
+                    <span id="chatTotalCount" class="badge-sub">Всего в диалоге: ~</span>
+                  </div>
+                </div>
+
+                <!-- EXPORT ACTIONS IN HEADER -->
+                <div class="chat-header-actions">
+                  <button id="downloadTxtBtn" class="btn-primary btn-download" title="Скачать сообщения в TXT">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="7 10 12 15 17 10"></polyline>
+                      <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span>Скачать TXT</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- CONTROLS & PAGINATION BAR -->
+              <div class="chat-toolbar">
+                <div class="toolbar-stats">
+                  <span id="toolbarStatsText">Показаны последние сообщения</span>
+                </div>
+                <div class="toolbar-buttons">
+                  <button id="loadMoreMessagesBtn" class="btn-tool">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M12 5v14M5 12h14"></path>
+                    </svg>
+                    <span>Загрузить ещё (+50)</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- MESSAGES PREVIEW SCROLL CONTAINER -->
+              <div class="messages-scroll-area" id="messagesList">
+                <!-- Rendered dynamically -->
+              </div>
+
+              <!-- TXT PREVIEW BOTTOM BAR -->
+              <div class="export-preview-bar">
+                <div class="export-hint">
+                  <span class="hint-bullet">•</span>
+                  <span>Файл формируется в чистом виде (UTF-8 с BOM), сохраняя даты, имена и вложения.</span>
+                </div>
+                <button id="downloadTxtBottomBtn" class="btn-primary btn-download-bottom">
+                  Скачать .TXT
+                </button>
+              </div>
+
+              <!-- CLEAN MINIMALISM STATUSBAR -->
+              <footer class="app-statusbar">
+                <div class="statusbar-left">
+                  <span>VK Chat Exporter v1.0.4</span>
+                  <span class="statusbar-dot"></span>
+                  <span>API: Подключено (v5.199)</span>
+                </div>
+                <div class="statusbar-right">
+                  <span>Личные сообщения не сохраняются на серверах</span>
+                </div>
+              </footer>
+
+            </div>
+          </section>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- TOAST NOTIFICATIONS -->
+    <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+    <!-- INFO / HELP MODAL -->
+    <div id="infoModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>О сервисе VK Chat Exporter</h3>
+          <button id="closeInfoModalBtn" class="btn-icon" aria-label="Закрыть">✕</button>
+        </div>
+        <div class="modal-body">
+          <h4>Официальная авторизация и безопасность</h4>
+          <p>
+            Сервис использует исключительно официальный протокол <strong>VK OAuth 2.0 / VK ID</strong>. Приложение не собирает ваши логины и пароли, не использует сторонние библиотеки для парсинга и не сохраняет текст ваших сообщений в долговременную базу данных.
+          </p>
+          
+          <h4>Ограничения VK API для сообщений</h4>
+          <p>
+            Методы <code>messages.getConversations</code> и <code>messages.getHistory</code> защищены правилами ВКонтакте. Для прямого доступа к личным сообщениям VK требует прохождения модерации в кабинете разработчика VK (dev.vk.com) или использования типа приложения «Standalone».
+          </p>
+
+          <h4>Формат выгрузки</h4>
+          <pre class="code-sample">
+[04.09.2026 21:14] Имя Собеседника:
+Текст первого сообщения
+
+[04.09.2026 21:15] Вы:
+Ответное сообщение
+[Вложение: фото]</pre>
+
+          <p class="modal-footnote">
+            Вложения помечаются читаемыми маркерами <code>[Вложение: фото]</code>, <code>[Вложение: видео]</code>, <code>[Вложение: голосовое сообщение]</code> без битых ссылок и тяжелых медиафайлов.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button id="confirmInfoModalBtn" class="btn-primary">Понятно</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
