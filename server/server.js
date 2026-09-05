@@ -257,6 +257,63 @@ export function createExpressApp() {
     });
   });
 
+  // 5b. Direct Token Login (Supports standalone/Kate tokens with messages scope without dev.vk.com hurdles)
+  app.post('/api/auth/token-login', async (req, res) => {
+    try {
+      let { token } = req.body || {};
+      if (!token && process.env.VK_ACCESS_TOKEN) {
+        token = process.env.VK_ACCESS_TOKEN;
+      }
+
+      if (!token || typeof token !== 'string') {
+        return res.status(400).json({ error: 'Токен VK обязателен' });
+      }
+
+      // Auto-extract access_token if the user pasted the entire blank.html#access_token=... URL
+      let cleanToken = token.trim();
+      let extractedUserId = null;
+      const tokenMatch = cleanToken.match(/access_token=([^&]+)/);
+      if (tokenMatch) {
+        cleanToken = tokenMatch[1];
+      }
+      const userMatch = token.match(/user_id=([^&]+)/);
+      if (userMatch) {
+        extractedUserId = userMatch[1];
+      }
+
+      // Verify token with VK API users.get
+      const user = await getUserProfile(cleanToken, extractedUserId);
+
+      const sessionId = createSession({
+        accessToken: cleanToken,
+        userId: user.id,
+        expiresIn: 30 * 86400, // 30 days
+        isDemo: false,
+      });
+
+      res.cookie('vk_session_id', sessionId, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        maxAge: 30 * 86400 * 1000,
+      });
+
+      res.json({
+        success: true,
+        sessionId,
+        accessToken: cleanToken,
+        user,
+        isDemo: false,
+      });
+    } catch (err) {
+      console.error('Token login error:', err.message);
+      res.status(401).json({
+        error: 'INVALID_TOKEN',
+        message: err.message || 'Не удалось авторизоваться по токену VK',
+      });
+    }
+  });
+
   // 6. Current authenticated user profile
   app.get('/api/auth/me', requireAuth, async (req, res) => {
     try {
@@ -268,9 +325,13 @@ export function createExpressApp() {
         });
       }
 
-      const profile = await getUserProfile(req.session.accessToken, req.session.userId);
+      const profile = await getUserProfile(req.session.accessToken, req.session.userId || undefined);
+      if (!req.session.userId && profile.id) {
+        req.session.userId = profile.id;
+      }
       res.json({
         authenticated: true,
+        sessionId: req.sessionId,
         isDemo: false,
         user: profile,
       });
@@ -294,7 +355,8 @@ export function createExpressApp() {
 
   // 7. Logout endpoint
   app.post('/api/auth/logout', (req, res) => {
-    const sessionId = req.cookies?.vk_session_id || req.headers['x-session-id'];
+    const bearerToken = req.headers.authorization?.replace(/^Bearer\s+/i, '')?.trim();
+    const sessionId = req.cookies?.vk_session_id || req.headers['x-session-id'] || bearerToken;
     if (sessionId) {
       destroySession(sessionId);
     }

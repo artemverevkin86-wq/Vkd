@@ -95,22 +95,118 @@
             </div>
           </div>
 
-          <!-- PRIMARY LOGIN ACTION -->
-          <div class="login-action-group">
-            <button id="vkLoginBtn" class="btn-primary btn-vk-main">
-              <svg class="btn-vk-icon" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
-                <path d="M12.98 17.5c-4.95 0-7.77-3.41-7.89-9.08h2.47c.08 4.16 1.91 5.92 3.36 6.28V8.42h2.33v3.58c1.42-.15 2.9-1.78 3.4-3.58h2.32c-.39 2.22-2.02 3.85-3.18 4.52 1.16.54 3.01 1.99 3.73 4.56h-2.55c-.56-1.76-1.97-3.13-3.83-3.32v3.32h-.16z"/>
-              </svg>
-              <span>Войти через VK</span>
-            </button>
+          <!-- PRIMARY ACTION PANELS -->
+          <div class="login-action-group" style="display: flex; flex-direction: column; gap: 16px; width: 100%;">
+            
+            <!-- METHOD 1: DIRECT VK ACCESS VIA AUTHORIZATION LINK -->
+            <div class="auth-card" style="background: var(--bg-card); border: 2px solid #2563eb; border-radius: var(--radius-md); padding: 20px; text-align: left; box-shadow: 0 4px 16px rgba(37,99,235,0.12);">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                <span style="font-size: 1.5rem;">⚡</span>
+                <div>
+                  <strong style="font-size: 1.1rem; color: #1e3a8a; display: block;">Прямой доступ в аккаунт (Быстро за 30 секунд)</strong>
+                  <span style="font-size: 0.82rem; color: #2563eb; font-weight: 500;">Без ожидания архива • Сразу открывает ваши диалоги и сообщения</span>
+                </div>
+              </div>
 
-            <!-- DEMO / TEST MODE BUTTON -->
-            <button id="demoLoginBtn" class="btn-secondary">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-              </svg>
-              <span>Попробовать демо-режим (быстрый тест)</span>
-            </button>
+              <!-- STEP-BY-STEP GUIDE -->
+              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-sm); padding: 14px; margin-bottom: 16px;">
+                <div style="font-size: 0.86rem; color: #1e293b; line-height: 1.55; display: flex; flex-direction: column; gap: 10px;">
+                  
+                  <div style="display: flex; gap: 10px; align-items: flex-start;">
+                    <span style="background: #2563eb; color: #fff; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 700; flex-shrink: 0; margin-top: 2px;">1</span>
+                    <div style="flex: 1;">
+                      <span style="font-weight: 600; color: #0f172a;">Нажмите кнопку авторизации ВКонтакте:</span>
+                      <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px;">
+                        <a id="btnAuthKate" href="https://oauth.vk.com/authorize?client_id=2685278&scope=messages,offline&redirect_uri=https://oauth.vk.com/blank.html&response_type=token" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background: #2563eb; font-size: 0.85rem; padding: 8px 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                          <span>👉 1. Открыть доступ в VK (Основная ссылка)</span>
+                          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                        </a>
+                        <a id="btnAuthAdmin" href="https://oauth.vk.com/authorize?client_id=6121327&scope=messages,offline&redirect_uri=https://oauth.vk.com/blank.html&response_type=token" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="font-size: 0.82rem; padding: 8px 12px; text-decoration: none;">
+                          Запасная ссылка 1
+                        </a>
+                        <a id="btnAuthMe" href="https://oauth.vk.com/authorize?client_id=6146827&scope=messages,offline&redirect_uri=https://oauth.vk.com/blank.html&response_type=token" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="font-size: 0.82rem; padding: 8px 12px; text-decoration: none;">
+                          Запасная ссылка 2
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="display: flex; gap: 10px; align-items: flex-start;">
+                    <span style="background: #2563eb; color: #fff; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 700; flex-shrink: 0; margin-top: 2px;">2</span>
+                    <div style="flex: 1;">
+                      <span style="color: #0f172a;">В открывшемся окне VK нажмите синюю кнопку <strong>«Разрешить»</strong>.</span>
+                    </div>
+                  </div>
+
+                  <div style="display: flex; gap: 10px; align-items: flex-start;">
+                    <span style="background: #2563eb; color: #fff; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 700; flex-shrink: 0; margin-top: 2px;">3</span>
+                    <div style="flex: 1;">
+                      <span style="color: #0f172a;">
+                        Откроется белая страница. <strong>Скопируйте весь адрес из адресной строки браузера</strong>
+                        (он начинается на <code style="background: #e2e8f0; padding: 1px 4px; border-radius: 3px; font-size: 0.75rem;">https://oauth.vk.com/blank.html#access_token=...</code>).
+                      </span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- INPUT AND ACTION -->
+              <div>
+                <label for="directTokenInput" style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-main); margin-bottom: 6px;">
+                  Вставьте скопированный адрес или токен сюда:
+                </label>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <input id="directTokenInput" type="text" placeholder="https://oauth.vk.com/blank.html#access_token=vk1.a... или сам токен" style="flex: 1; min-width: 240px; height: 44px; padding: 0 12px; border: 1.5px solid #2563eb; border-radius: var(--radius-sm); font-size: 0.85rem; background: var(--bg-input); font-family: var(--font-mono); box-sizing: border-box;" />
+                  <button id="pasteClipboardBtn" type="button" class="btn-secondary" style="height: 44px; padding: 0 12px; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 4px;" title="Вставить из буфера обмена">
+                    <span>📋 Вставить</span>
+                  </button>
+                  <button id="submitDirectTokenBtn" class="btn-primary" style="height: 44px; padding: 0 20px; font-size: 0.9rem; font-weight: 600; background: #2563eb; color: #ffffff; flex-shrink: 0;">
+                    <span>Войти и открыть чаты</span>
+                  </button>
+                </div>
+                <div style="margin-top: 6px; font-size: 0.75rem; color: #64748b;">
+                  🔒 Токен используется только для прямого чтения сообщений с серверов ВКонтакте.
+                </div>
+              </div>
+            </div>
+
+            <!-- METHOD 2 (COLLAPSIBLE / ALTERNATIVE): VK DATA ARCHIVE -->
+            <details style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px 16px; text-align: left;">
+              <summary style="cursor: pointer; font-size: 0.92rem; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 8px;">
+                <span>📦 Другой вариант: Загрузить архив переписок .ZIP или messages.html</span>
+              </summary>
+              <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-subtle);">
+                <p style="font-size: 0.82rem; color: var(--text-content); margin: 0 0 10px 0; line-height: 1.45;">
+                  Если вы ранее запрашивали архив данных VK на странице <a href="https://vk.com/data_protection?section=rules&sub=2" target="_blank" rel="noopener noreferrer" style="color: #2563eb;">vk.com/data_protection</a>, вы можете перетащить файл сюда для мгновенного экспорта в чистый .TXT:
+                </p>
+
+                <!-- DROPZONE FOR ARCHIVE -->
+                <div id="archiveDropzone" style="border: 2px dashed #93c5fd; border-radius: var(--radius-sm); padding: 14px 10px; text-align: center; background: #f8fafc; cursor: pointer; transition: all 0.2s ease;">
+                  <input type="file" id="archiveDirectInput" accept=".zip,.html,.htm,.txt,.json" style="display: none;" />
+                  <div style="font-size: 1.5rem; margin-bottom: 4px;">📥</div>
+                  <strong style="display: block; font-size: 0.86rem; color: #1e293b; margin-bottom: 2px;">Загрузить файл архива .ZIP или messages.html</strong>
+                  <span style="font-size: 0.76rem; color: #64748b;">Нажмите для выбора на устройстве или перетащите файл</span>
+                </div>
+
+                <!-- ARCHIVE PARSING STATUS / DIALOG SELECTOR -->
+                <div id="archiveResultBox" class="hidden" style="margin-top: 12px; padding: 10px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: var(--radius-sm);">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <strong id="archiveResultTitle" style="font-size: 0.85rem; color: #0f172a;">Найденные диалоги:</strong>
+                    <span id="archiveResultBadge" style="font-size: 0.75rem; background: #dcfce7; color: #15803d; padding: 2px 8px; border-radius: 99px; font-weight: 600;">Готово</span>
+                  </div>
+                  <div id="archiveChatsList" style="max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px;"></div>
+                </div>
+              </div>
+            </details>
+
+            <!-- METHOD 3: PASTE TEXT MANUALLY -->
+            <div style="text-align: center; margin-top: 2px;">
+              <button id="pasteChatBtn" class="btn-ghost" style="font-size: 0.82rem; color: var(--text-secondary); text-decoration: underline; padding: 4px 8px;">
+                📋 Или вставить скопированный текст вручную
+              </button>
+            </div>
+
           </div>
 
           <!-- VK API NOTICE -->
@@ -313,8 +409,84 @@
       </div>
     </div>
 
+    <!-- TOKEN LOGIN MODAL -->
+    <div id="tokenModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Вход по токену ВКонтакте</h3>
+          <button id="closeTokenModalBtn" class="btn-icon" aria-label="Закрыть">✕</button>
+        </div>
+        <div class="modal-body">
+          <p>
+            ВКонтакте запрещает обычным сайтам на dev.vk.com читать личные сообщения без сложной модерации. Авторизация по личному токену даёт полноценный доступ к вашим диалогам для скачивания в .TXT.
+          </p>
+          
+          <div style="background: var(--bg-content); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px 16px;">
+            <strong style="display:block; margin-bottom: 6px; color: var(--text-main);">Вход по токену VK:</strong>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.45;">
+              Если у вас уже есть токен доступа ВКонтакте (например, от мобильного клиента или VK Standalone), вставьте его в поле ниже. Сервис подключится к API и отобразит ваши диалоги.
+            </p>
+          </div>
+
+          <div style="margin-top: 14px;">
+            <label for="tokenInput" style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px; color:var(--text-main);">
+              Вставьте скопированный адрес или токен:
+            </label>
+            <input id="tokenInput" type="text" placeholder="https://oauth.vk.com/blank.html#access_token=vk1.a... или vk1.a..." style="width: 100%; height: 42px; padding: 0 12px; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-size: 0.85rem; background: var(--bg-input); font-family: var(--font-mono); box-sizing: border-box;" />
+          </div>
+        </div>
+        <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center; gap: 12px;">
+          <span style="font-size:0.75rem; color:var(--text-muted); line-height: 1.3;">Токен используется только для запросов к VK API</span>
+          <button id="submitTokenBtn" class="btn-primary" style="flex-shrink: 0;">Войти и открыть чаты</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASTE CHAT DIRECTLY MODAL -->
+    <div id="pasteChatModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+      <div class="modal-card" style="max-width: 680px; width: 95%;">
+        <div class="modal-header">
+          <h3>Конвертер текста диалога в чистый .TXT</h3>
+          <button id="closePasteModalBtn" class="btn-icon" aria-label="Закрыть">✕</button>
+        </div>
+        <div class="modal-body" style="display: flex; flex-direction: column; gap: 14px;">
+          
+          <div style="background: var(--bg-content); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 12px 14px;">
+            <strong style="display:block; margin-bottom: 4px; color: var(--text-main); font-size: 0.88rem;">Быстрая конвертация:</strong>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0; line-height: 1.45;">
+              Скопируйте сообщения из диалога VK и вставьте в поле ниже, либо загрузите файл. Сервис удалит системный мусор и преобразует текст в аккуратный хронологический <code>.txt</code> файл.
+            </p>
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label for="rawChatText" style="font-size: 0.85rem; font-weight: 600; color: var(--text-main);">
+                Текст переписки:
+              </label>
+              <label class="btn-ghost" style="font-size: 0.78rem; padding: 4px 8px; cursor: pointer; border: 1px solid var(--border-subtle);">
+                📁 Выбрать файл (.html/.txt)
+                <input type="file" id="chatFileInput" accept=".txt,.html,.htm,.json" style="display: none;" />
+              </label>
+            </div>
+            <textarea id="rawChatText" rows="10" placeholder="Вставьте сюда скопированные сообщения из ВКонтакте..." style="width: 100%; padding: 10px 12px; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-size: 0.85rem; background: var(--bg-input); font-family: var(--font-mono); resize: vertical; box-sizing: border-box;"></textarea>
+          </div>
+
+        </div>
+        <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+          <span id="parsedStatsLabel" style="font-size: 0.8rem; color: var(--text-muted);">Строк: 0</span>
+          <div style="display: flex; gap: 8px;">
+            <button id="cancelPasteModalBtn" class="btn-ghost">Отмена</button>
+            <button id="processAndDownloadTxtBtn" class="btn-primary" style="background: #2563eb; color: #ffffff;">
+              📥 Скачать в .TXT
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
+  <script src="jszip.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
